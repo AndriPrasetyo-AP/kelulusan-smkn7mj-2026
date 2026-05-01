@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumuman Kelulusan | SMK Negeri 7 Muaro Jambi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff;
+        }
+        .bg-school-blue { background-color: #1e3a8a; } 
+        .text-school-blue { color: #1e3a8a; }
+        .bg-school-yellow { background-color: #fbbf24; } 
+        .text-school-yellow { color: #b45309; } 
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-school-blue shadow-lg border-b-4 border-yellow-400">
+        <div class="max-w-4xl mx-auto px-4 py-6 text-center">
+            <div class="inline-block bg-white p-3 rounded-full mb-3 shadow-md">
+                <i class="fas fa-graduation-cap text-4xl text-school-blue"></i>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-white uppercase tracking-wider">SMK Negeri 7 Muaro Jambi</h1>
+            <p class="text-yellow-400 font-semibold mt-1 text-lg">Pengumuman Kelulusan Tahun Ajaran 2025/2026</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden border border-gray-100">
+            
+            <!-- Countdown Section -->
+            <div class="p-6 md:p-8 text-center" id="countdown-section">
+                <div class="inline-block bg-yellow-100 p-3 rounded-full mb-4">
+                    <i class="fas fa-clock text-3xl text-school-yellow"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-school-blue mb-2">Pengumuman Belum Dibuka</h2>
+                <p class="text-gray-600 mb-8">Hasil kelulusan akan dapat diakses dalam:</p>
+                
+                <div class="flex justify-center gap-2 sm:gap-4 text-center">
+                    <div class="bg-gray-50 p-3 rounded-xl w-20 shadow-sm border border-gray-200">
+                        <span id="cd-days" class="text-2xl sm:text-3xl font-bold text-school-blue">00</span>
+                        <p class="text-[10px] sm:text-xs text-gray-500 mt-1 uppercase font-semibold">Hari</p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl w-20 shadow-sm border border-gray-200">
+                        <span id="cd-hours" class="text-2xl sm:text-3xl font-bold text-school-blue">00</span>
+                        <p class="text-[10px] sm:text-xs text-gray-500 mt-1 uppercase font-semibold">Jam</p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl w-20 shadow-sm border border-gray-200">
+                        <span id="cd-minutes" class="text-2xl sm:text-3xl font-bold text-school-blue">00</span>
+                        <p class="text-[10px] sm:text-xs text-gray-500 mt-1 uppercase font-semibold">Menit</p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl w-20 shadow-sm border border-gray-200">
+                        <span id="cd-seconds" class="text-2xl sm:text-3xl font-bold text-school-blue">00</span>
+                        <p class="text-[10px] sm:text-xs text-gray-500 mt-1 uppercase font-semibold">Detik</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="p-6 md:p-8 hidden" id="search-section">
+                <div class="text-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Cek Status Kelulusan</h2>
+                    <p class="text-gray-500 text-sm mt-1">Masukkan Nomor Induk Siswa Nasional (NISN) Anda pada kolom di bawah ini.</p>
+                </div>
+                
+                <form id="search-form" class="space-y-4">
+                    <div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-id-card text-gray-400"></i>
+                            </div>
+                            <input type="text" id="nisn-input" required
+                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-colors shadow-sm text-lg"
+                                placeholder="Masukkan NISN...">
+                        </div>
+                    </div>
+                    <button type="submit" 
+                        class="w-full bg-school-yellow hover:bg-yellow-500 text-blue-900 font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] shadow-md flex justify-center items-center">
+                        <i class="fas fa-search mr-2"></i> Cari Hasil
+                    </button>
+                </form>
+
+                <div id="loading-indicator" class="hidden text-center py-4 mt-4">
+                    <i class="fas fa-circle-notch fa-spin text-3xl text-school-blue"></i>
+                    <p class="text-gray-600 mt-2">Mencari data...</p>
+                </div>
+
+                <div id="error-message" class="hidden mt-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700" id="error-text">Data tidak ditemukan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div id="result-section" class="hidden border-t border-gray-200">
+                <div id="status-banner" class="py-4 text-center">
+                    <h2 id="status-text" class="text-2xl font-bold tracking-widest uppercase">LULUS</h2>
+                </div>
+
+                <div class="p-6 md:p-8 bg-gray-50">
+                    <h3 class="text-lg font-bold text-gray-800 border-b border-gray-300 pb-2 mb-4">Biodata Siswa</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-500">Nama Lengkap</p>
+                            <p class="font-semibold text-gray-900 text-lg" id="res-nama">-</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">NISN</p>
+                                <p class="font-semibold text-gray-900" id="res-nisn">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Tempat, Tanggal Lahir</p>
+                                <p class="font-semibold text-gray-900" id="res-ttl">-</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Kompetensi Keahlian</p>
+                            <p class="font-semibold text-gray-900" id="res-jurusan">-</p>
+                        </div>
+                    </div>
+
+                    <div id="special-message" class="hidden mt-6 bg-blue-50 border border-blue-200 p-4 rounded-lg text-center">
+                        <i class="fas fa-bullhorn text-school-blue text-xl mb-2"></i>
+                        <p class="text-school-blue font-semibold">Selamat Atas Kelulusannya!</p>
+                        <p class="text-sm text-gray-600 mt-1">Semoga sukses di langkah selanjutnya. Teruslah berkarya dan gapai cita-citamu!</p>
+                    </div>
+
+                    <div id="skl-section" class="hidden mt-4">
+                        <a href="#" id="btn-download-skl" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all shadow-md flex justify-center items-center">
+                            <i class="fas fa-file-download mr-2"></i> Download Surat Keterangan Lulus (SKL)
+                        </a>
+                    </div>
+
+                    <button onclick="resetForm()" class="mt-8 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors">
+                        <i class="fas fa-arrow-left mr-2"></i> Kembali Pencarian
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Login Section -->
+            <div id="admin-login-section" class="hidden p-6 md:p-8">
+                <div class="text-center mb-6">
+                    <div class="inline-block bg-gray-100 p-3 rounded-full mb-3">
+                        <i class="fas fa-lock text-3xl text-gray-600"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800">Login Administrator</h2>
+                </div>
+                <form id="admin-login-form" class="space-y-4">
+                    <div>
+                        <input type="password" id="admin-pin" required
+                            class="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 text-center text-xl tracking-widest"
+                            placeholder="••••••">
+                    </div>
+                    <button type="submit" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-4 rounded-lg shadow-md">Masuk</button>
+                    <button type="button" onclick="kembaliKeAwal()" class="w-full mt-2 text-sm text-gray-500 hover:text-gray-700">Kembali</button>
+                </form>
+            </div>
+
+            <!-- Admin Dashboard Section -->
+            <div id="admin-dashboard-section" class="hidden p-6 md:p-8">
+                <div class="flex justify-between items-center border-b border-gray-200 pb-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800"><i class="fas fa-cogs text-school-blue"></i> Panel Admin</h2>
+                    <button onclick="logoutAdmin()" class="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200">Keluar</button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        <h3 class="font-semibold text-blue-900 mb-2"><i class="fas fa-user-graduate mr-2"></i>Uji Coba Pengumuman</h3>
+                        <button onclick="masukModeSiswa()" class="w-full bg-school-blue hover:bg-blue-800 text-white py-2 rounded-lg text-sm font-semibold">Buka Form Pencarian</button>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
+                        <h3 class="font-semibold text-purple-900 mb-2"><i class="fas fa-clock mr-2"></i>Atur Hitung Mundur</h3>
+                        <input type="datetime-local" id="admin-countdown-input" class="w-full px-3 py-2 border rounded-lg text-sm mb-2">
+                        <button onclick="simpanCountdown()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg text-sm font-semibold">Simpan Waktu</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-4 relative group">
+        <p class="text-sm text-gray-400">&copy; 2026 SMK Negeri 7 Muaro Jambi.</p>
+        <button onclick="showAdminLogin()" class="absolute bottom-4 right-4 text-gray-600 hover:text-white" title="Login Admin">
+            <i class="fas fa-user-shield"></i>
+        </button>
+    </footer>
+
+    <script>
+        // ========================================================
+        // KONFIGURASI URL GOOGLE SCRIPT & ADMIN (GANTI DI SINI)
+        // ========================================================
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoQj8QYh9SOw7Hotam-KDG3LVQf-xApWkDkHVyoMKGwziWgmD1wdlc0LrBESr22OIELg/exec'; 
+
+        const ADMIN_PIN = "123456"; 
+        const defaultTargetDate = new Date("May 4, 2026 22:00:00").getTime();
+        let targetDate = localStorage.getItem('savedCountdown') ? parseInt(localStorage.getItem('savedCountdown')) : defaultTargetDate;
+        
+        const countdownSection = document.getElementById('countdown-section');
+        const searchSection = document.getElementById('search-section');
+        let countdownTimer;
+
+        // Fungsi Hitung Mundur
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance <= 0) {
+                if (countdownTimer) clearInterval(countdownTimer);
+                countdownSection.classList.add('hidden');
+                searchSection.classList.remove('hidden');
+                return true; 
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("cd-days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("cd-hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("cd-minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("cd-seconds").innerText = seconds.toString().padStart(2, '0');
+            return false; 
+        }
+
+        if (!updateCountdown()) {
+            countdownTimer = setInterval(updateCountdown, 1000);
+        }
+
+        // ========================================================
+        // FUNGSI KONVERSI LINK GOOGLE DRIVE KE DIRECT DOWNLOAD
+        // ========================================================
+        function getDirectDownloadLink(url) {
+            try {
+                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    const fileId = match[1];
+                    return `https://drive.google.com/uc?export=download&id=${fileId}`;
+                }
+            } catch (e) {
+                console.error("Gagal memproses URL", e);
+            }
+            return url;
+        }
+
+        // ========================================================
+        // LOGIKA PENCARIAN (MENGGUNAKAN FETCH API KE GOOGLE SCRIPT)
+        // ========================================================
+        document.getElementById('search-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nisn = document.getElementById('nisn-input').value.trim();
+            if (!nisn) return;
+
+            document.getElementById('error-message').classList.add('hidden');
+            document.getElementById('loading-indicator').classList.remove('hidden');
+            document.querySelector('button[type="submit"]').disabled = true;
+
+            try {
+                if(GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwoQj8QYh9SOw7Hotam-KDG3LVQf-xApWkDkHVyoMKGwziWgmD1wdlc0LrBESr22OIELg/exec') {
+                    throw new Error("URL Google Script belum dimasukkan oleh admin!");
+                }
+
+                // Melakukan request ke Google Script
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?nisn=${nisn}`);
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    tampilkanHasil(result.data);
+                } else {
+                    throw new Error(result.message || "Data tidak ditemukan. Pastikan NISN yang dimasukkan benar.");
+                }
+
+            } catch (error) {
+                document.getElementById('error-message').classList.remove('hidden');
+                document.getElementById('error-text').innerText = error.message === "Failed to fetch" 
+                    ? "Gagal terhubung ke database. Periksa koneksi internet." 
+                    : error.message;
+            } finally {
+                document.getElementById('loading-indicator').classList.add('hidden');
+                document.querySelector('button[type="submit"]').disabled = false;
+            }
+        });
+
+        function tampilkanHasil(data) {
+            document.getElementById('search-section').classList.add('hidden');
+            document.getElementById('result-section').classList.remove('hidden');
+
+            document.getElementById('res-nama').innerText = data.nama;
+            document.getElementById('res-nisn').innerText = data.nisn;
+            document.getElementById('res-ttl').innerText = data.ttl;
+            document.getElementById('res-jurusan').innerText = data.jurusan;
+
+            const statusBanner = document.getElementById('status-banner');
+            const statusText = document.getElementById('status-text');
+            const specialMessage = document.getElementById('special-message');
+            const sklSection = document.getElementById('skl-section'); 
+            const btnSkl = document.getElementById('btn-download-skl'); 
+
+            statusText.innerText = data.status_kelulusan.toUpperCase();
+
+            if (data.status_kelulusan.toUpperCase() === 'LULUS') {
+                statusBanner.className = "py-4 text-center bg-green-500 text-white";
+                specialMessage.classList.remove('hidden');
+                
+                if (data.link_skl && data.link_skl.trim() !== "") {
+                    btnSkl.href = getDirectDownloadLink(data.link_skl.trim());
+                    btnSkl.removeAttribute('onclick');
+                } else {
+                    btnSkl.href = "#";
+                    btnSkl.setAttribute('onclick', 'alert("File SKL untuk Anda belum tersedia. Silakan hubungi Tata Usaha."); return false;');
+                }
+                sklSection.classList.remove('hidden'); 
+            } else {
+                statusBanner.className = "py-4 text-center bg-red-500 text-white";
+                specialMessage.classList.add('hidden');
+                sklSection.classList.add('hidden'); 
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('search-section').classList.remove('hidden');
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('nisn-input').value = '';
+            document.getElementById('nisn-input').focus();
+        }
+
+        // ==========================================
+        // LOGIC ADMIN PANEL
+        // ==========================================
+        function hideAllSections() {
+            document.getElementById('countdown-section').classList.add('hidden');
+            document.getElementById('search-section').classList.add('hidden');
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('admin-dashboard-section').classList.add('hidden');
+            document.getElementById('admin-login-section').classList.add('hidden');
+        }
+
+        function showAdminLogin() {
+            hideAllSections();
+            document.getElementById('admin-login-section').classList.remove('hidden');
+            document.getElementById('admin-pin').focus();
+        }
+
+        function kembaliKeAwal() {
+            hideAllSections();
+            const now = new Date().getTime();
+            if (targetDate - now <= 0) {
+                document.getElementById('search-section').classList.remove('hidden');
+            } else {
+                document.getElementById('countdown-section').classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pin = document.getElementById('admin-pin').value;
+            if (pin === ADMIN_PIN) {
+                document.getElementById('admin-pin').value = ''; 
+                hideAllSections();
+                
+                const dateObj = new Date(targetDate);
+                const tzOffset = dateObj.getTimezoneOffset() * 60000; 
+                const localISOTime = (new Date(dateObj - tzOffset)).toISOString().slice(0, 16);
+                document.getElementById('admin-countdown-input').value = localISOTime;
+
+                document.getElementById('admin-dashboard-section').classList.remove('hidden');
+            } else {
+                alert("Akses Ditolak: PIN Admin Salah!");
+                document.getElementById('admin-pin').value = '';
+            }
+        });
+
+        function simpanCountdown() {
+            const inputVal = document.getElementById('admin-countdown-input').value;
+            if(!inputVal) return alert("Silakan pilih tanggal dan waktu!");
+            
+            const newDate = new Date(inputVal).getTime();
+            localStorage.setItem('savedCountdown', newDate);
+            targetDate = newDate;
+            alert("Waktu berhasil diperbarui!");
+            
+            if(countdownTimer) clearInterval(countdownTimer);
+            if (!updateCountdown()) {
+                countdownTimer = setInterval(updateCountdown, 1000);
+            }
+        }
+
+        function logoutAdmin() {
+            kembaliKeAwal();
+            const banner = document.getElementById('simulasi-banner');
+            if(banner) banner.remove();
+        }
+
+        function masukModeSiswa() {
+            hideAllSections();
+            document.getElementById('search-section').classList.remove('hidden');
+            
+            if(!document.getElementById('simulasi-banner')) {
+                const simulasiBanner = document.createElement('div');
+                simulasiBanner.id = 'simulasi-banner';
+                simulasiBanner.className = 'bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-3 mb-6 rounded text-sm flex items-center shadow-sm';
+                simulasiBanner.innerHTML = '<i class="fas fa-exclamation-triangle text-xl mr-3"></i> <div><strong>MODE SIMULASI ADMIN</strong></div>';
+                
+                const searchSection = document.getElementById('search-section');
+                searchSection.insertBefore(simulasiBanner, searchSection.firstChild);
+            }
+        }
+    </script>
+</body>
+</html>
